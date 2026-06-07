@@ -1,0 +1,109 @@
+/* ==========================================================================
+   ResQ-AI Custom Application Stylesheet
+   ========================================================================== */
+
+/* Custom Variables for Theme Customization if needed */
+:root {
+  --slate-750: #1e293b;
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom Scrollbar Styling for Incident Queues & Forms */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a; /* Slate 950 */
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155; /* Slate 700 */
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569; /* Slate 600 */
+}
+
+/* Custom Utility Classes extending Tailwind */
+.bg-slate-750 {
+  background-color: var(--slate-750);
+}
+
+/* Micro-interactions & Smooth States */
+#incident-form select,
+#incident-form input,
+#incident-form textarea {
+  transition: var(--transition-smooth);
+}
+
+#incident-form select:focus,
+#incident-form input:focus,
+#incident-form textarea:focus {
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15); /* Indigo Glow */
+}
+
+#dispatch-btn,
+button[type="submit"] {
+  transition: var(--transition-smooth);
+}
+
+/* ==========================================================================
+   Animation Keyframes & Interface Engines
+   ========================================================================== */
+
+/* Toast Slide-Up & Fade-In Animation */
+@keyframes slideUp {
+  from {
+    transform: translateY(1.5rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Live Incident Feed Dynamic Injection Glow */
+@keyframes fadeInHighlight {
+  from {
+    opacity: 0;
+    background-color: rgba(99, 102, 241, 0.25); /* Indigo burst on insert */
+    transform: scale(0.99);
+  }
+  to {
+    opacity: 1;
+    background-color: rgba(15, 23, 42, 0.4); /* Normal blend */
+    transform: scale(1);
+  }
+}
+
+/* Pulse Glow Effect for Critical Metrics */
+@keyframes criticalPulse {
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    opacity: 0.8;
+    text-shadow: 0 0 2px rgba(239, 68, 68, 0.1);
+  }
+}
+
+/* ==========================================================================
+   Animation Wrapper Classes
+   ========================================================================== */
+.animate-slideUp {
+  animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fadeIn {
+  animation: fadeInHighlight 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.text-red-500.animate-pulse {
+  animation: criticalPulse 2s infinite ease-in-out;
+}

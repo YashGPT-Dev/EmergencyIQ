@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Emergency Response Dashboard</title>
+    <!-- Tailwind CSS for UI styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Dashboard Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-slate-900 text-slate-100 font-sans antialiased">
+    <!-- Top Navigation Bar -->
+    <nav
+      class="bg-slate-800 border-b border-slate-700 px-6 py-4 flex justify-between items-center sticky top-0 z-50"
+    >
+      <div class="flex items-center gap-3">
+        <div class="bg-red-600 text-white p-2 rounded-lg animate-pulse">
+          <i class="fa-solid fa-shield-halved text-xl"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-wide">ResQ-AI</h1>
+          <p class="text-xs text-slate-400">Emergency Response Coordination</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-6">
+        <div
+          class="flex items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-full border border-slate-700"
+        >
+          <span
+            class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping"
+          ></span>
+          <span class="text-xs font-medium text-slate-300">AI Core Active</span>
+        </div>
+        <div class="relative cursor-pointer">
+          <i
+            class="fa-solid fa-bell text-xl text-slate-400 hover:text-white transition"
+          ></i>
+          <span
+            class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full"
+            >3</span
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Dashboard Grid Layout -->
+    <main
+      class="p-6 grid grid-cols-1 xl:grid-cols-4 gap-6 max-w-[1600px] mx-auto"
+    >
+      <!-- COLUMN 1 & 2: Live Operations Dashboard & Map (Left Side) -->
+      <section class="xl:col-span-2 space-y-6">
+        <!-- Stats Counters -->
+        <div class="grid grid-cols-3 gap-4">
+          <div
+            class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex items-center justify-between"
+          >
+            <div>
+              <p class="text-xs text-slate-400 font-medium uppercase">
+                Active Incidents
+              </p>
+              <p class="text-2xl font-bold mt-1 text-red-500" id="stat-active">
+                14
+              </p>
+            </div>
+            <i
+              class="fa-solid fa-triangle-exclamation text-2xl text-slate-600"
+            ></i>
+          </div>
+          <div
+            class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex items-center justify-between"
+          >
+            <div>
+              <p class="text-xs text-slate-400 font-medium uppercase">
+                En Route
+              </p>
+              <p class="text-2xl font-bold mt-1 text-amber-500" id="stat-route">
+                08
+              </p>
+            </div>
+            <i class="fa-solid fa-truck-medical text-2xl text-slate-600"></i>
+          </div>
+          <div
+            class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex items-center justify-between"
+          >
+            <div>
+              <p class="text-xs text-slate-400 font-medium uppercase">
+                Resolved Today
+              </p>
+              <p class="text-2xl font-bold mt-1 text-emerald-500">42</p>
+            </div>
+            <i class="fa-solid fa-circle-check text-2xl text-slate-600"></i>
+          </div>
+        </div>
+
+        <!-- Operations Map Mockup -->
+        <div
+          class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden shadow-lg"
+        >
+          <div
+            class="p-4 bg-slate-800/50 border-b border-slate-700 flex justify-between items-center"
+          >
+            <h2
+              class="font-semibold text-sm tracking-wide text-slate-300 flex items-center gap-2"
+            >
+              <i class="fa-solid fa-map-location-dot text-indigo-400"></i>
+              Real-Time Resource Deployment Map
+            </h2>
+            <span class="text-xs text-slate-400">Live GPS Feeds</span>
+          </div>
+          <!-- Visual Map Simulator -->
+          <div
+            class="h-[380px] bg-slate-950 relative flex items-center justify-center bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:16px_16px]"
+          >
+            <div class="absolute text-center pointer-events-none opacity-20">
+              <i class="fa-solid fa-earth-asia text-9xl"></i>
+              <p class="text-xs mt-2">Geospatial Grid Active</p>
+            </div>
+            <!-- Live incident markers on map -->
+            <div
+              class="absolute top-1/4 left-1/3 text-red-500 animate-bounce cursor-pointer group"
+            >
+              <i class="fa-solid fa-fire text-2xl"></i>
+              <span
+                class="absolute left-6 top-0 bg-slate-900 text-[10px] px-2 py-0.5 rounded border border-red-500 hidden group-hover:block whitespace-nowrap"
+                >ID-902: Fire Alert</span
+              >
+            </div>
+            <div
+              class="absolute bottom-1/3 right-1/4 text-amber-500 animate-bounce cursor-pointer group"
+            >
+              <i class="fa-solid fa-car-burst text-2xl"></i>
+              <span
+                class="absolute left-6 top-0 bg-slate-900 text-[10px] px-2 py-0.5 rounded border border-amber-500 hidden group-hover:block whitespace-nowrap"
+                >ID-903: Car Crash</span
+              >
+            </div>
+            <!-- Dispatched Resource markers -->
+            <div
+              class="absolute top-1/3 left-1/2 text-cyan-400 transition-all duration-1000"
+              id="map-ambulance"
+            >
+              <i class="fa-solid fa-ambulance text-xl"></i>
+            </div>
+            <div class="absolute bottom-1/2 right-1/3 text-blue-400">
+              <i class="fa-solid fa-shield-heart text-xl"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Emergency Feed -->
+        <div
+          class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden"
+        >
+          <div class="p-4 bg-slate-800/50 border-b border-slate-700">
+            <h2
+              class="font-semibold text-sm tracking-wide text-slate-300 flex items-center gap-2"
+            >
+              <i class="fa-solid fa-list-check text-amber-400"></i> Live
+              Critical Incidents Queue
+            </h2>
+          </div>
+          <div
+            class="divide-y divide-slate-700 max-h-[280px] overflow-y-auto"
+            id="incident-queue"
+          >
+            <!-- Sample Row 1 -->
+            <div
+              class="p-4 flex items-center justify-between hover:bg-slate-750 transition"
+            >
+              <div class="flex items-center gap-4">
+                <span
+                  class="bg-red-500/10 text-red-400 px-2.5 py-1 rounded text-xs font-bold border border-red-500/20"
+                  >CRITICAL</span
+                >
+                <div>
+                  <h4 class="text-sm font-semibold">
+                    Commercial Building Fire
+                  </h4>
+                  <p class="text-xs text-slate-400 mt-0.5">
+                    <i class="fa-solid fa-location-dot mr-1"></i> Sector 42,
+                    Block C
+                  </p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span
+                  class="text-xs bg-slate-700 px-3 py-1 rounded-full text-slate-300"
+                  >Fire Brigade x3 Depot</span
+                >
+                <p class="text-[10px] text-slate-500 mt-1">
+                  Reported 2 mins ago
+                </p>
+              </div>
+            </div>
+            <!-- Sample Row 2 -->
+            <div
+              class="p-4 flex items-center justify-between hover:bg-slate-750 transition"
+            >
+              <div class="flex items-center gap-4">
+                <span
+                  class="bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded text-xs font-bold border border-amber-500/20"
+                  >HIGH</span
+                >
+                <div>
+                  <h4 class="text-sm font-semibold">Multiple Vehicle Pileup</h4>
+                  <p class="text-xs text-slate-400 mt-0.5">
+                    <i class="fa-solid fa-location-dot mr-1"></i> Highway 10, KM
+                    24
+                  </p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span
+                  class="text-xs bg-slate-700 px-3 py-1 rounded-full text-slate-300"
+                  >Ambulance x2, Highway Patrol</span
+                >
+                <p class="text-[10px] text-slate-500 mt-1">
+                  Reported 7 mins ago
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUMN 3: Intelligent Incident Reporting Form -->
+      <section
+        class="bg-slate-800 rounded-xl border border-slate-700 p-5 flex flex-col shadow-lg"
+      >
+        <h2
+          class="font-semibold text-base tracking-wide text-slate-200 flex items-center gap-2 mb-4"
+        >
+          <i class="fa-solid fa-file-medical text-emerald-400"></i> Intelligent
+          Incident Intake
+        </h2>
+        <form
+          id="incident-form"
+          class="space-y-4 flex-1 flex flex-col justify-between"
+        >
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1.5"
+                >Emergency Type</label
+              >
+              <select
+  id="inc-type"
+  class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition"
+>
+  <option value="Medical Emergency">Medical Emergency</option>
+  <option value="Structure Fire">
+    Structure Fire / Gas Leak
+  </option>
+  <option value="Road Accident">Road Traffic Accident</option>
+  <option value="Public Crowd Incident">
+    Public Crowd Incident / Riot
+  </option>
+</select>
+</div>
+
+<!-- Location -->
+<div>
+  <label class="block text-xs font-medium text-slate-400 mb-1.5">
+    Incident Location
+  </label>
+  <input
+    type="text"
+    id="location"
+    placeholder="Enter incident location"
+    class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition"
+  />
+</div>
+
+<!-- Number of People -->
+<div>
+  <label class="block text-xs font-medium text-slate-400 mb-1.5">
+    Estimated People Affected
+  </label>
+  <input
+    type="number"
+    id="affected"
+    min="1"
+    placeholder="e.g. 5"
+    class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition"
+  />
+</div>
+
+<!-- Description -->
+<div>
+  <label class="block text-xs font-medium text-slate-400 mb-1.5">
+    Incident Description
+  </label>
+  <textarea
+    id="description"
+    rows="5"
+    placeholder="Describe the emergency situation..."
+    class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-slate-200 resize-none focus:outline-none focus:border-indigo-500 transition"
+  ></textarea>
+</div>
+
+<!-- Submit Button -->
+<button
+  type="submit"
+  class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition duration-300"
+>
+  <i class="fa-solid fa-brain mr-2"></i>
+  Analyze with AI
+</button>
+
+</div>
+</form>
+
+<!-- AI Analysis Output -->
+<div
+  id="ai-result"
+  class="mt-6 bg-slate-900 border border-slate-700 rounded-xl p-4 hidden"
+>
+  <h3 class="text-sm font-semibold text-indigo-400 mb-3">
+    AI Incident Analysis
+  </h3>
+
+  <div id="result-content" class="space-y-2 text-sm text-slate-300">
+  </div>
+</div>
+            </div>
+          </div>
+        </form>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
