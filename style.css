@@ -6,6 +6,9 @@
 :root {
   --slate-750: #1e293b;
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --ai-glow-indigo: rgba(99, 102, 241, 0.15);
+  --glass-bg: rgba(30, 41, 59, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.06);
 }
 
 /* Custom Scrollbar Styling for Incident Queues & Forms */
@@ -32,6 +35,14 @@
   background-color: var(--slate-750);
 }
 
+/* Glassmorphism Panel Enhancement Styling */
+.bg-slate-800 {
+  background-color: var(--glass-bg) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border) !important;
+}
+
 /* Micro-interactions & Smooth States */
 #incident-form select,
 #incident-form input,
@@ -42,12 +53,23 @@
 #incident-form select:focus,
 #incident-form input:focus,
 #incident-form textarea:focus {
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15); /* Indigo Glow */
+  box-shadow: 0 0 0 3px var(--ai-glow-indigo); /* Indigo Glow */
+  border-color: #6366f1 !important;
 }
 
 #dispatch-btn,
 button[type="submit"] {
   transition: var(--transition-smooth);
+}
+
+/* Multi-Channel Dropdown Optimization Style */
+#channel {
+  border-left: 3px solid #10b981; /* Emerald visual anchor for active channel */
+}
+
+/* Success Metric Progress Bars Smoothing */
+.w-full.bg-slate-900 > div {
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ==========================================================================
@@ -93,6 +115,19 @@ button[type="submit"] {
   }
 }
 
+/* AI Processing Fade-In State */
+@keyframes aiPulseGlow {
+  0%,
+  100% {
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 0 4px rgba(99, 102, 241, 0.1);
+  }
+  50% {
+    border-color: rgba(99, 102, 241, 0.6);
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+  }
+}
+
 /* ==========================================================================
    Animation Wrapper Classes
    ========================================================================== */
@@ -106,4 +141,11 @@ button[type="submit"] {
 
 .text-red-500.animate-pulse {
   animation: criticalPulse 2s infinite ease-in-out;
+}
+
+/* Dynamic AI container glow active state when visible */
+#ai-result:not(.hidden) {
+  animation:
+    aiPulseGlow 3s infinite ease-in-out,
+    slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
